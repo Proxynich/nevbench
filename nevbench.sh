@@ -152,7 +152,7 @@ sysinfo() {
   cache="$(awk -F: '/cache size/ {print $2; exit}' /proc/cpuinfo | sed 's/^ *//')"
   aes="$(grep -q aes /proc/cpuinfo && echo ENABLED || echo DISABLED)"
   vmx="$(grep -qiE 'vmx|svm' /proc/cpuinfo && echo ENABLED || echo DISABLED)"
-  virt="$(systemd-detect-virt 2>/dev/null)"
+  virt="$(systemd-detect-virt 2>/dev/null || echo "" )"
   os="$(awk -F= '/^PRETTY_NAME/ {print $2}' /etc/os-release | tr -d '"')"
   arch="$(uname -m)"
   kernel="$(uname -r)"
