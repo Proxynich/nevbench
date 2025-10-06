@@ -80,3 +80,7 @@ wget -qO- https://github.com/proxynich/nevbench/raw/main/nevbench.sh | sudo bash
 ▸ Virtualization     : kvm
 ▸ OS                 : Debian GNU/Linux 12 (bookworm)
 ```
+
+**I am not a professional developer.**
+This script is just an experiment, please don't get mad at me.
+Telegram : @ekcelsebastianus
