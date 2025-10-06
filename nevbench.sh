@@ -161,6 +161,7 @@ sysinfo() {
   uptime="$(uptime -p | sed 's/up //')"
   load="$(awk '{print $1", "$2", "$3}' /proc/loadavg)"
   org="$(curl -s https://ipinfo.io/org || echo N/A)"
+  tcp_cc="$(cat /proc/sys/net/ipv4/tcp_congestion_control)"
   loc="$(curl -s https://ipinfo.io/city 2>/dev/null), $(curl -s https://ipinfo.io/region 2>/dev/null)"
   ipv4=$(ip -4 addr show scope global | grep -q . && echo ENABLED || echo DISABLED)
   ipv6=$(ip -6 addr show scope global | grep -q . && echo ENABLED || echo DISABLED)
@@ -181,6 +182,7 @@ sysinfo() {
   echo -e "▸ OS                 : ${os}"
   echo -e "▸ Architecture       : ${arch}"
   echo -e "▸ Kernel             : ${kernel}"
+  echo -e "▸ TCP CC             : ${tcp_cc}"
   echo -e "▸ Disk Usage         : ${disk}"
   echo -e "▸ Memory Usage       : ${mem}"
   echo -e "▸ System Uptime      : ${uptime}"
