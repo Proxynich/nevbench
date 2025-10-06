@@ -1,5 +1,4 @@
 #!/bin/bash
-# Requires: bash, jq, fio, sysbench, iperf3, ping, bc, awk, sed, curl/wget
 
 set -euo pipefail
 IFS=$'\n\t'
@@ -12,7 +11,7 @@ MAGENTA="\033[0;35m"
 BOLD="\033[1m"
 RESET="\033[0m"
 
-WORKDIR="/tmp/bevo-$$"
+WORKDIR="/tmp/nevbench-$$"
 FIO_SIZE="1G"
 FIO_RUNTIME=10
 FIO_IOENGINE="libaio"
@@ -152,7 +151,7 @@ sysinfo() {
   cache="$(awk -F: '/cache size/ {print $2; exit}' /proc/cpuinfo | sed 's/^ *//')"
   aes="$(grep -q aes /proc/cpuinfo && echo ENABLED || echo DISABLED)"
   vmx="$(grep -qiE 'vmx|svm' /proc/cpuinfo && echo ENABLED || echo DISABLED)"
-  virt="$(systemd-detect-virt 2>/dev/null || echo "" )"
+  virt="$(systemd-detect-virt 2>/dev/null || echo "")"
   os="$(awk -F= '/^PRETTY_NAME/ {print $2}' /etc/os-release | tr -d '"')"
   arch="$(uname -m)"
   kernel="$(uname -r)"
@@ -182,11 +181,11 @@ sysinfo() {
   echo -e "▸ OS                 : ${os}"
   echo -e "▸ Architecture       : ${arch}"
   echo -e "▸ Kernel             : ${kernel}"
-  echo -e "▸ TCP CC             : ${tcp_cc}"
   echo -e "▸ Disk Usage         : ${disk}"
   echo -e "▸ Memory Usage       : ${mem}"
   echo -e "▸ System Uptime      : ${uptime}"
   echo -e "▸ Load Average       : ${load}"
+  echo -e "▸ TCP CC             : ${tcp_cc}"
   echo -e "▸ Network            : IPv4: $(color_status "$ipv4") | IPv6: $(color_status "$ipv6")"
   echo -e "▸ Organization       : ${org}"
   echo -e "▸ Location           : ${loc}"
@@ -200,7 +199,7 @@ disk_bench() {
   local bss=(4k 64k 512k 1m)
   for bs in "${bss[@]}"; do
     out="$WORKDIR/fio-${bs}.json"
-    fio --name=bevo --filename="$WORKDIR/fio-testfile" --size="$FIO_SIZE" \
+    fio --name=nevbench --filename="$WORKDIR/fio-testfile" --size="$FIO_SIZE" \
       --ioengine="$FIO_IOENGINE" --direct=1 --bs="$bs" \
       --rw=readwrite --rwmixread=50 --numjobs=1 --runtime="$FIO_RUNTIME" \
       --time_based --group_reporting --output-format=json > "$out" 2>/dev/null || true
