@@ -28,6 +28,9 @@ IPERF_SERVERS=(
 "Gigahost:NO:lg.gigahost.no:9201"
 "Scaleway:FR:ping.online.net:5200"
 "Moji:FR:iperf3.moji.fr:5200"
+"Fiberby:DK:speed2.fiberby.dk:9204"
+"LeaseWeb:JP:speedtest.tyo11.jp.leaseweb.net:5205"
+"OVH:AU:syd.proof.ovh.net:5207"
 )
 
 cleanup() { rm -rf "$WORKDIR"; }
